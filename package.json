@@ -1,0 +1,34 @@
+{
+  "name": "node-fetch-lite",
+  "description": "A very basic API compatible replacement for node-fetch, without leaking memory when making thousands of requests",
+  "version": "0.1.0",
+  "license": "Unlicense",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ronny1982/node-fetch-lite"
+  },
+  "main": "./dist/index.js",
+  "files": [
+    "/dist",
+    "/README",
+    "/UNLICENSE"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "@types/fs-extra": "latest",
+    "@types/jest": "latest",
+    "@types/node": "latest",
+    "fs-extra": "latest",
+    "jest": "latest",
+    "jest-junit": "latest",
+    "jest-mock-extended": "latest",
+    "ts-jest": "latest",
+    "typescript": "latest"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "cd test && jest --color --config=jest.js",
+    "deploy": "npm install && npm run build && npm run test && node bump-version.js && npm publish --access public",
+    "deploy:dry": "npm install && npm run build && npm run test && npm publish --dry-run --access public"
+  }
+}
