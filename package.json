@@ -1,7 +1,7 @@
 {
   "name": "node-fetch-lite",
   "description": "A very basic API compatible replacement for node-fetch, without leaking memory when making thousands of requests",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "Unlicense",
   "repository": {
     "type": "git",
