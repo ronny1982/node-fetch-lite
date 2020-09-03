@@ -28,26 +28,32 @@ export class Response {
         return this._message;
     }
 
-    private async bytes(): Promise<Uint8Array[]> {
+    private async buffer(): Promise<Buffer> {
         if(!this._message.readable) {
             throw new Error('Failed to read from stream!');
         }
         return await new Promise((resolve, reject) => {
-            const chunks = [];
+            const chunks: Buffer[] = [];
             this.body
                 .on('error', reject)
-                .on('data', chunk => chunks.push(chunk))
-                .on('end', () => resolve(chunks));
+                .on('data', chunk => chunks.push(chunk as Buffer))
+                .on('end', () => resolve(Buffer.concat(chunks)));
         });
     }
 
-    public async text(): Promise<string> {
-        const bytes = await this.bytes();
-        return Buffer.concat(bytes).toString('utf8');
+    private async bytes(): Promise<Uint8Array> {
+        return Uint8Array.from(await this.buffer());
     }
 
-    public async json(): Promise<any> {
-        const text = await this.text();
-        return JSON.parse(text);
+    public async arrayBuffer(): Promise<ArrayBuffer> {
+        return (await this.bytes()).buffer;
+    }
+
+    public async text(): Promise<string> {
+        return (await this.buffer()).toString('utf8');
+    }
+
+    public async json<T=any>(): Promise<T> {
+        return JSON.parse(await this.text()) as T;
     }
 }
